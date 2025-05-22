@@ -47,7 +47,7 @@ export const useCsrfToken = () => {
 /**
  * React component that adds a CSRF token to a form
  */
-export const CsrfToken: React.FC = () => {
+export const CsrfToken = () => {
   const { csrfToken } = useCsrfToken();
 
   return (
