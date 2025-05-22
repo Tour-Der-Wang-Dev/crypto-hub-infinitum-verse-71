@@ -1,8 +1,16 @@
+
+# InfiWorld Robots.txt
+User-agent: *
+Allow: /
+
+# Allow search engines to index all pages
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Twitterbot
 Allow: /
@@ -10,5 +18,9 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-User-agent: *
-Allow: /
+# Block access to admin-related pages
+Disallow: /admin/
+Disallow: /private/
+
+# Sitemap location
+Sitemap: https://infiworld.lovable.app/sitemap.xml

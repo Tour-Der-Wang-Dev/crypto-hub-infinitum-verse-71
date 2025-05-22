@@ -1,73 +1,113 @@
-# Welcome to your Lovable project
 
-## Project info
+# InfiWorld Crypto Hub
 
-**URL**: https://lovable.dev/projects/7a19d937-66f3-4064-9007-086aa17249d0
+[![Performance: Optimized](https://img.shields.io/badge/Performance-Optimized-success)](https://infiworld.lovable.app)
+[![SEO: Enhanced](https://img.shields.io/badge/SEO-Enhanced-blue)](https://infiworld.lovable.app)
+[![PWA: Enabled](https://img.shields.io/badge/PWA-Enabled-blueviolet)](https://infiworld.lovable.app)
 
-## How can I edit this code?
+The ultimate platform integrating cryptocurrency payments into marketplace, freelance services, and travel reservations.
 
-There are several ways of editing your application.
+## Features
 
-**Use Lovable**
+- **Marketplace**: Buy and sell products with cryptocurrency
+- **Freelance**: Find or offer services with secure crypto payments
+- **Travel**: Book flights, hotels, and experiences using blockchain
+- **Interactive Map**: Discover crypto-friendly businesses globally
+- **PWA Support**: Install as an app and use offline
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/7a19d937-66f3-4064-9007-086aa17249d0) and start prompting.
+## Performance Optimizations
 
-Changes made via Lovable will be committed automatically to this repo.
+InfiWorld has been optimized for maximum performance:
 
-**Use your preferred IDE**
+- 🚀 Lazy loading for images and below-the-fold content
+- 📦 Code splitting for route-based chunk loading
+- 🔄 Service worker for offline capabilities and caching
+- 📱 Core Web Vitals optimized (LCP, FID, CLS)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## SEO Enhancements
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- 📑 Semantic HTML structure with proper heading hierarchy
+- 🔍 Comprehensive meta tags including Open Graph and Twitter Cards
+- 🧩 Structured data with JSON-LD for rich search results
+- 🗺️ Dynamic sitemap.xml and optimized robots.txt
 
-Follow these steps:
+## Tech Stack
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+- **Frontend**: React, TypeScript, Vite
+- **Styling**: Tailwind CSS, shadcn/ui
+- **State Management**: TanStack Query
+- **Routing**: React Router
+- **Charts**: Recharts
+- **Icons**: lucide-react
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## Getting Started
 
-# Step 3: Install the necessary dependencies.
-npm i
+```typescript
+// Prerequisites
+// Node.js 16+ and npm or yarn
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+// Clone the repository
+git clone https://github.com/your-username/infiworld.git
+
+// Install dependencies
+cd infiworld
+npm install
+
+// Start development server
 npm run dev
+
+// Build for production
+npm run build
+
+// Preview production build
+npm run preview
 ```
 
-**Edit a file directly in GitHub**
+## Environment Setup
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```typescript
+// .env file structure
+VITE_API_URL=https://api.example.com
+VITE_GOOGLE_ANALYTICS_ID=G-XXXXXXXXXX
+VITE_PAGESPEED_API_KEY=your_key_here
+```
 
-**Use GitHub Codespaces**
+## Project Structure
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```
+infiworld/
+├── docs/                  # Documentation files
+├── public/                # Static assets
+│   ├── service-worker.js  # PWA service worker
+│   ├── manifest.json      # PWA manifest
+│   ├── sitemap.xml        # SEO sitemap
+│   └── robots.txt         # Crawler instructions
+├── src/
+│   ├── components/        # UI components
+│   ├── data/              # Mock data
+│   ├── hooks/             # Custom React hooks
+│   ├── lib/               # Utility functions
+│   ├── pages/             # Page components
+│   └── types/             # TypeScript types
+└── README.md              # This file
+```
 
-## What technologies are used for this project?
+## Performance Monitoring
 
-This project is built with:
+Performance metrics are automatically tracked using Google PageSpeed Insights API. See `docs/performance-monitoring.md` for details.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## SEO Strategy
 
-## How can I deploy this project?
+Comprehensive SEO implementation details are available in `docs/seo-guide.md`.
 
-Simply open [Lovable](https://lovable.dev/projects/7a19d937-66f3-4064-9007-086aa17249d0) and click on Share -> Publish.
+## Contributing
 
-## Can I connect a custom domain to my Lovable project?
+We welcome contributions! Please see our contributing guidelines for more details.
 
-Yes, you can!
+## License
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## Contact
+
+For questions or support, please open an issue or contact us at support@infiworld.com.
