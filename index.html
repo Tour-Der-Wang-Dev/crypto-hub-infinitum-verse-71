@@ -4,6 +4,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.gpteng.co 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' data: https: http:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://api.snyk.io https://lovable.dev; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests;">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta name="Permissions-Policy" content="camera=(), microphone=(), geolocation=(self), interest-cohort=()">
+    
+    <!-- Regular metadata -->
     <title>InfiWorld - Crypto Hub for Marketplace, Freelance, and Travel</title>
     <meta name="description" content="The ultimate platform integrating cryptocurrency payments into marketplace, freelance services and travel reservations" />
     <meta name="author" content="InfiWorld" />
