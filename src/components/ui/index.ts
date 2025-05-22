@@ -31,7 +31,8 @@ export * from "./separator";
 export * from "./sheet";
 export * from "./skeleton";
 export * from "./slider";
-export * from "./sonner";
+// Export everything from sonner except 'toast' to avoid naming conflicts
+export { Toaster } from "./sonner";
 export * from "./switch";
 export * from "./table";
 export * from "./tabs";
@@ -40,4 +41,5 @@ export * from "./toast";
 export * from "./toggle";
 export * from "./toggle-group";
 export * from "./tooltip";
-export * from "./use-toast";
+// Export the toast function from use-toast to avoid naming conflicts with sonner's toast
+export { useToast, toast } from "./use-toast";
