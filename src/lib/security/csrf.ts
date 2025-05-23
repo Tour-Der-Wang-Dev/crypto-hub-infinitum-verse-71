@@ -48,10 +48,13 @@ export const useCsrfToken = () => {
 /**
  * React component that adds a CSRF token to a form
  */
-export const CsrfToken = () => {
+export const CsrfToken: React.FC = () => {
   const { csrfToken } = useCsrfToken();
 
-  return (
-    <input type="hidden" name="csrf_token" value={csrfToken} role="none" />
-  );
+  return React.createElement('input', {
+    type: 'hidden',
+    name: 'csrf_token',
+    value: csrfToken,
+    role: 'none'
+  });
 };

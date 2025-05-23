@@ -71,7 +71,7 @@ describe('CSRF Protection', () => {
 
   describe('CsrfToken component', () => {
     it('renders a hidden input with the token value', () => {
-      const { container } = render(<CsrfToken />);
+      const { container } = render(React.createElement(CsrfToken));
       
       const inputElement = container.querySelector('input[type="hidden"][name="csrf_token"]');
       expect(inputElement).toBeInTheDocument();
