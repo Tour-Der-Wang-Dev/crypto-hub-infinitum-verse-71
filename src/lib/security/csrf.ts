@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from 'react';
+import React from 'react';
 
 /**
  * Generates a CSRF token

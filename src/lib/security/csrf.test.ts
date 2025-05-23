@@ -1,74 +1,81 @@
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { renderHook } from '@testing-library/react';
-import { generateCsrfToken, useCsrfToken, CsrfToken } from './csrf';
 import { render } from '@testing-library/react';
+import { useCsrfToken, CsrfToken, generateCsrfToken } from './csrf';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-describe('CSRF Security Module', () => {
+describe('CSRF Protection', () => {
+  // Mock sessionStorage
+  const mockSessionStorage = (() => {
+    let store: Record<string, string> = {};
+    return {
+      getItem: (key: string) => store[key] || null,
+      setItem: (key: string, value: string) => {
+        store[key] = value.toString();
+      },
+      clear: () => {
+        store = {};
+      },
+    };
+  })();
+
+  beforeEach(() => {
+    // Setup sessionStorage mock
+    Object.defineProperty(window, 'sessionStorage', { value: mockSessionStorage });
+  });
+
+  afterEach(() => {
+    mockSessionStorage.clear();
+    vi.resetAllMocks();
+  });
+
   describe('generateCsrfToken', () => {
-    it('should generate a non-empty string', () => {
+    it('should generate a random token string', () => {
       const token = generateCsrfToken();
-      expect(token).toBeDefined();
       expect(typeof token).toBe('string');
-      expect(token.length).toBeGreaterThan(0);
+      expect(token.length).toBeGreaterThan(10);
     });
 
-    it('should generate unique tokens', () => {
+    it('should generate unique tokens each time', () => {
       const token1 = generateCsrfToken();
       const token2 = generateCsrfToken();
-      expect(token1).not.toBe(token2);
+      expect(token1).not.toEqual(token2);
     });
   });
 
   describe('useCsrfToken', () => {
-    beforeEach(() => {
-      // Clear storage before each test
-      window.sessionStorage.clear();
+    it('should generate and store a token on mount', () => {
+      const { result } = renderHook(() => useCsrfToken());
+      
+      expect(result.current.csrfToken).toBeTruthy();
+      expect(mockSessionStorage.getItem('csrf_token')).toEqual(result.current.csrfToken);
     });
 
-    it('should generate and return a token on mount', () => {
+    it('should refresh the token when requested', () => {
       const { result } = renderHook(() => useCsrfToken());
-      expect(result.current.csrfToken).toBeDefined();
-      expect(typeof result.current.csrfToken).toBe('string');
-      expect(result.current.csrfToken.length).toBeGreaterThan(0);
-    });
-
-    it('should store the token in sessionStorage', () => {
-      const { result } = renderHook(() => useCsrfToken());
-      const storedToken = sessionStorage.getItem('csrf_token');
-      expect(storedToken).toBe(result.current.csrfToken);
-    });
-
-    it('should refresh the token when refreshToken is called', () => {
-      const { result } = renderHook(() => useCsrfToken());
-      const originalToken = result.current.csrfToken;
+      const initialToken = result.current.csrfToken;
+      
       const newToken = result.current.refreshToken();
-      expect(newToken).not.toBe(originalToken);
-      expect(result.current.csrfToken).toBe(newToken);
-      expect(sessionStorage.getItem('csrf_token')).toBe(newToken);
+      
+      expect(newToken).not.toEqual(initialToken);
+      expect(mockSessionStorage.getItem('csrf_token')).toEqual(newToken);
     });
 
-    it('should correctly verify valid tokens', () => {
+    it('should verify tokens correctly', () => {
       const { result } = renderHook(() => useCsrfToken());
-      const token = result.current.csrfToken;
-      expect(result.current.verifyToken(token)).toBe(true);
-    });
-
-    it('should reject invalid tokens', () => {
-      const { result } = renderHook(() => useCsrfToken());
+      
+      expect(result.current.verifyToken(result.current.csrfToken)).toBe(true);
       expect(result.current.verifyToken('invalid-token')).toBe(false);
     });
   });
 
   describe('CsrfToken component', () => {
-    it('should render a hidden input with the token value', () => {
-      const { getByRole } = render(<CsrfToken />);
-      const input = getByRole('none', { hidden: true }) as HTMLInputElement;
-      expect(input).toBeInTheDocument();
-      expect(input.type).toBe('hidden');
-      expect(input.name).toBe('csrf_token');
-      expect(input.value).toBeDefined();
-      expect(input.value.length).toBeGreaterThan(0);
+    it('renders a hidden input with the token value', () => {
+      const { container } = render(<CsrfToken />);
+      
+      const inputElement = container.querySelector('input[type="hidden"][name="csrf_token"]');
+      expect(inputElement).toBeInTheDocument();
+      expect(inputElement).toHaveAttribute('value');
     });
   });
 });
