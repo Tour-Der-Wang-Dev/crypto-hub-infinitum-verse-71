@@ -1,5 +1,5 @@
 
-import { describe, it, expect, vi, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
 import { generateCspString, applySecurityHeaders, securityHeaders } from './security-headers';
 
 describe('Security Headers Module', () => {

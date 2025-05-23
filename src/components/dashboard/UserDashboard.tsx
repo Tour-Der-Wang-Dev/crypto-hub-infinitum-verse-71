@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { User, Wallet, MapPin, ShoppingBag, Briefcase, Plane } from 'lucide-react';
 import CryptoRatesCard from '@/components/crypto/CryptoRatesCard';
+import WeatherDisplay from '@/components/weather/WeatherDisplay';
 
 const UserDashboard = () => {
   const [user] = useState({
@@ -61,25 +62,30 @@ const UserDashboard = () => {
           </Card>
 
           {/* Quick Stats */}
-          <Card className="card-glass">
-            <CardHeader>
-              <CardTitle className="text-infi-gold">Quick Stats</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Total Spent</span>
-                <span className="text-white font-medium">0.22 BTC</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Transactions</span>
-                <span className="text-white font-medium">12</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Member Since</span>
-                <span className="text-white font-medium">{user.joinDate}</span>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="space-y-4">
+            <Card className="card-glass">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-infi-gold">Quick Stats</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-400">Total Spent</span>
+                  <span className="text-white font-medium">0.22 BTC</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-400">Transactions</span>
+                  <span className="text-white font-medium">12</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-400">Member Since</span>
+                  <span className="text-white font-medium">{user.joinDate}</span>
+                </div>
+              </CardContent>
+            </Card>
+            
+            {/* Weather Widget */}
+            <WeatherDisplay />
+          </div>
 
           {/* Crypto Rates */}
           <CryptoRatesCard />

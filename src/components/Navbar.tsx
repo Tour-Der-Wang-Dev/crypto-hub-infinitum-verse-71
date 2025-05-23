@@ -5,6 +5,7 @@ import { Menu, X } from 'lucide-react';
 import { Map, Marketplace, Freelance, Travel } from '@/components/custom-icons';
 import { Link } from 'react-router-dom';
 import InfinityLogo from '@/components/InfinityLogo';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -32,20 +33,31 @@ const Navbar = () => {
           <Link to="/travel" className="px-3 py-2 rounded-md text-sm flex items-center gap-1.5 hover:bg-infi-blue/30 transition-colors">
             <Travel size={16} /> Travel
           </Link>
+          <Link to="/dashboard" className="px-3 py-2 rounded-md text-sm hover:bg-infi-blue/30 transition-colors">
+            Dashboard
+          </Link>
+          <Link to="/admin" className="px-3 py-2 rounded-md text-sm hover:bg-infi-blue/30 transition-colors">
+            Admin
+          </Link>
         </div>
 
-        {/* Connect Wallet Button */}
-        <Button className="gold-gradient animate-pulse-gold hidden md:flex">
-          Connect Wallet
-        </Button>
+        <div className="hidden md:flex items-center gap-2">
+          <ThemeToggle />
+          <Button className="gold-gradient animate-pulse-gold">
+            Connect Wallet
+          </Button>
+        </div>
 
         {/* Mobile menu button */}
-        <button
-          className="md:hidden p-2 rounded-md hover:bg-infi-blue/30 transition-colors"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <button
+            className="p-2 rounded-md hover:bg-infi-blue/30 transition-colors"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
@@ -79,6 +91,20 @@ const Navbar = () => {
               onClick={() => setMobileMenuOpen(false)}
             >
               <Travel size={18} /> Travel
+            </Link>
+            <Link
+              to="/dashboard"
+              className="block px-3 py-2 rounded-md text-base font-medium hover:bg-infi-blue/30 transition-colors"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Dashboard
+            </Link>
+            <Link
+              to="/admin"
+              className="block px-3 py-2 rounded-md text-base font-medium hover:bg-infi-blue/30 transition-colors"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Admin
             </Link>
             <div className="pt-2">
               <Button className="gold-gradient animate-pulse-gold w-full">

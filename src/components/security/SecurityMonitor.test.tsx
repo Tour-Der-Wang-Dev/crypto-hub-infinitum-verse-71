@@ -1,3 +1,4 @@
+
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import React from 'react';
@@ -16,7 +17,7 @@ describe('SecurityMonitor Component', () => {
         id: 'VULN-1',
         title: 'Test Vulnerability',
         packageName: 'test-package',
-        severity: 'high',
+        severity: 'high' as 'high',
         fixedIn: '2.0.0',
         description: 'This is a test vulnerability'
       }

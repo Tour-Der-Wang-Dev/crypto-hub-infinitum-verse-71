@@ -9,7 +9,9 @@ import FreelancePage from '@/pages/FreelancePage';
 import TravelPage from '@/pages/TravelPage';
 import VerificationPage from '@/pages/VerificationPage';
 import DashboardPage from '@/pages/DashboardPage';
+import AdminPage from '@/pages/AdminPage';
 import NotFound from '@/pages/NotFound';
+import { Toaster } from '@/components/ui/toaster';
 import './App.css';
 
 const queryClient = new QueryClient();
@@ -27,8 +29,10 @@ function App() {
             <Route path="/travel" element={<TravelPage />} />
             <Route path="/verification" element={<VerificationPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/admin" element={<AdminPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <Toaster />
         </Router>
       </ThemeProvider>
     </QueryClientProvider>
