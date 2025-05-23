@@ -1,6 +1,6 @@
-
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import React from 'react';
 import SecurityMonitor from './SecurityMonitor';
 import * as vulnScanner from '@/lib/security/vulnerability-scanner';
 
@@ -22,11 +22,13 @@ describe('SecurityMonitor Component', () => {
       }
     ],
     summary: {
+      total: 1,
       critical: 0,
       high: 1,
       medium: 0,
       low: 0
-    }
+    },
+    timestamp: new Date().toISOString()
   };
 
   beforeEach(() => {
@@ -71,28 +73,22 @@ describe('SecurityMonitor Component', () => {
 
     render(<SecurityMonitor />);
     
-    // Results summary should be displayed
-    expect(screen.getByText('1')).toBeInTheDocument(); // High vulnerabilities
+    expect(screen.getByText('1')).toBeInTheDocument();
     
-    // Show details button should be present
     const showDetailsButton = screen.getByRole('button', { name: /Show Details/i });
     expect(showDetailsButton).toBeInTheDocument();
     
-    // Click to show details
     fireEvent.click(showDetailsButton);
     
-    // Vulnerability details should now be displayed
     await waitFor(() => {
       expect(screen.getByText('Test Vulnerability')).toBeInTheDocument();
       expect(screen.getByText(/Package: test-package/)).toBeInTheDocument();
       expect(screen.getByText('This is a test vulnerability')).toBeInTheDocument();
     });
     
-    // Scan again button should be present
     const scanAgainButton = screen.getByRole('button', { name: /Scan Again/i });
     expect(scanAgainButton).toBeInTheDocument();
     
-    // Click to scan again
     fireEvent.click(scanAgainButton);
     expect(startScanMock).toHaveBeenCalledTimes(1);
   });
@@ -102,7 +98,8 @@ describe('SecurityMonitor Component', () => {
       scanning: false,
       results: {
         vulnerabilities: [],
-        summary: { critical: 0, high: 0, medium: 0, low: 0 }
+        summary: { total: 0, critical: 0, high: 0, medium: 0, low: 0 },
+        timestamp: new Date().toISOString()
       },
       startScan: vi.fn(),
     });
