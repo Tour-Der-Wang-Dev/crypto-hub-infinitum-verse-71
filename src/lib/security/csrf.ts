@@ -51,6 +51,6 @@ export const CsrfToken = () => {
   const { csrfToken } = useCsrfToken();
 
   return (
-    <input type="hidden" name="csrf_token" value={csrfToken} />
+    <input type="hidden" name="csrf_token" value={csrfToken} role="none" />
   );
 };
