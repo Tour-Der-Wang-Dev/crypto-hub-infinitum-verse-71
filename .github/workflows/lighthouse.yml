@@ -1,0 +1,80 @@
+
+name: Lighthouse Performance Audit
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    # Run once a week on Monday at 1am
+    - cron: '0 1 * * 1'
+  workflow_dispatch:
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build
+        run: npm run build
+        
+      - name: Start server
+        run: npm run preview &
+        
+      - name: Wait for server
+        run: npx wait-on http://localhost:4173
+        
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v9
+        with:
+          urls: |
+            http://localhost:4173/
+            http://localhost:4173/marketplace
+            http://localhost:4173/freelance
+            http://localhost:4173/travel
+            http://localhost:4173/verification
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          configPath: './lighthouse.config.js'
+          
+      - name: Format lighthouse score
+        id: format_lighthouse_score
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const results = JSON.parse(fs.readFileSync('./lhci_reports/manifest.json'));
+            let markdownRows = '';
+            let comment = '| URL | Performance | Accessibility | Best Practices | SEO | PWA |\n';
+            comment += '| --- | --- | --- | --- | --- | --- |\n';
+            
+            Object.values(results).forEach(result => {
+              const url = result.url;
+              const summary = result.summary;
+              const performance = Math.round(summary.performance * 100);
+              const accessibility = Math.round(summary.accessibility * 100);
+              const bestPractices = Math.round(summary['best-practices'] * 100);
+              const seo = Math.round(summary.seo * 100);
+              const pwa = Math.round(summary.pwa * 100);
+              
+              comment += `| ${url} | ${performance} | ${accessibility} | ${bestPractices} | ${seo} | ${pwa} |\n`;
+            });
+            
+            core.setOutput('comment', comment);
+            
+      - name: Create comment
+        uses: peter-evans/commit-comment@v2
+        if: github.event_name == 'push'
+        with:
+          body: |
+            # Lighthouse Performance Results
+            ${{ steps.format_lighthouse_score.outputs.comment }}
+            [Full reports are available in the Artifacts section of the workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
