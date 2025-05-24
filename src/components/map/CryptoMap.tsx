@@ -1,184 +1,182 @@
 
-import { useEffect, useRef, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState, useEffect } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { MapPin, Search, Filter } from 'lucide-react';
+import { MapPin, Bitcoin, Filter } from 'lucide-react';
 
 interface CryptoLocation {
-  id: string;
+  id: number;
   name: string;
-  type: 'ATM' | 'Store' | 'Exchange';
+  type: 'store' | 'atm' | 'exchange';
   address: string;
+  cryptocurrencies: string[];
   lat: number;
   lng: number;
-  acceptedCoins: string[];
+  rating: number;
 }
 
 const CryptoMap = () => {
-  const mapContainer = useRef<HTMLDivElement>(null);
-  const [locations] = useState<CryptoLocation[]>([
-    {
-      id: '1',
-      name: 'Bitcoin ATM Central',
-      type: 'ATM',
-      address: '123 Main St, Bangkok',
-      lat: 13.7563,
-      lng: 100.5018,
-      acceptedCoins: ['BTC', 'ETH']
-    },
-    {
-      id: '2',
-      name: 'Crypto Coffee Shop',
-      type: 'Store',
-      address: '456 Sukhumvit Rd, Bangkok',
-      lat: 13.7462,
-      lng: 100.5348,
-      acceptedCoins: ['BTC', 'ETH', 'USDT']
-    },
-    {
-      id: '3',
-      name: 'Digital Exchange Hub',
-      type: 'Exchange',
-      address: '789 Silom Rd, Bangkok',
-      lat: 13.7251,
-      lng: 100.5330,
-      acceptedCoins: ['BTC', 'ETH', 'BNB', 'SOL', 'USDT']
-    }
-  ]);
-
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedType, setSelectedType] = useState<string>('all');
-
-  const filteredLocations = locations.filter(location => {
-    const matchesSearch = location.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         location.address.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesType = selectedType === 'all' || location.type === selectedType;
-    return matchesSearch && matchesType;
-  });
+  const [locations, setLocations] = useState<CryptoLocation[]>([]);
+  const [filter, setFilter] = useState<string>('all');
+  const [selectedLocation, setSelectedLocation] = useState<CryptoLocation | null>(null);
 
   useEffect(() => {
-    if (!mapContainer.current) return;
-
-    // For now, we'll show a placeholder map
-    // In production, this would initialize Mapbox GL JS
-    const mapElement = mapContainer.current;
-    mapElement.innerHTML = `
-      <div class="w-full h-full bg-gradient-to-br from-infi-dark-blue to-infi-dark rounded-lg flex items-center justify-center">
-        <div class="text-center">
-          <div class="text-4xl mb-4">🗺️</div>
-          <p class="text-infi-gold font-medium">Interactive Crypto Map</p>
-          <p class="text-gray-400 text-sm mt-2">Mapbox integration would be initialized here</p>
-        </div>
-      </div>
-    `;
+    // Mock data for crypto locations
+    const mockLocations: CryptoLocation[] = [
+      {
+        id: 1,
+        name: 'Crypto Coffee Shop',
+        type: 'store',
+        address: '123 Blockchain Ave, Bangkok',
+        cryptocurrencies: ['BTC', 'ETH', 'USDT'],
+        lat: 13.7563,
+        lng: 100.5018,
+        rating: 4.5,
+      },
+      {
+        id: 2,
+        name: 'Bitcoin ATM - Central Plaza',
+        type: 'atm',
+        address: 'Central Plaza, Bangkok',
+        cryptocurrencies: ['BTC'],
+        lat: 13.7463,
+        lng: 100.5318,
+        rating: 4.2,
+      },
+      {
+        id: 3,
+        name: 'Digital Exchange Hub',
+        type: 'exchange',
+        address: '456 Crypto Street, Bangkok',
+        cryptocurrencies: ['BTC', 'ETH', 'BNB', 'SOL'],
+        lat: 13.7663,
+        lng: 100.4918,
+        rating: 4.8,
+      },
+    ];
+    setLocations(mockLocations);
   }, []);
 
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
-      {/* Map Container */}
-      <div className="lg:col-span-2">
-        <Card className="card-glass h-full">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-infi-gold">
-              <MapPin size={20} />
-              Crypto Payment Locations
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="h-96 lg:h-[500px]">
-            <div ref={mapContainer} className="w-full h-full rounded-lg"></div>
-          </CardContent>
-        </Card>
-      </div>
+  const filteredLocations = filter === 'all' 
+    ? locations 
+    : locations.filter(loc => loc.type === filter);
 
-      {/* Sidebar */}
-      <div className="space-y-6">
-        {/* Search and Filters */}
+  const getTypeIcon = (type: string) => {
+    switch (type) {
+      case 'store': return '🏪';
+      case 'atm': return '🏧';
+      case 'exchange': return '🏛️';
+      default: return '📍';
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Filters */}
+      <Card className="card-glass">
+        <CardContent className="p-4">
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant={filter === 'all' ? 'default' : 'outline'}
+              onClick={() => setFilter('all')}
+              className={filter === 'all' ? 'gold-gradient' : 'border-infi-gold/50 text-infi-gold-light hover:bg-infi-gold/10'}
+            >
+              <Filter className="h-4 w-4 mr-2" />
+              All Locations
+            </Button>
+            <Button
+              variant={filter === 'store' ? 'default' : 'outline'}
+              onClick={() => setFilter('store')}
+              className={filter === 'store' ? 'gold-gradient' : 'border-infi-gold/50 text-infi-gold-light hover:bg-infi-gold/10'}
+            >
+              Stores
+            </Button>
+            <Button
+              variant={filter === 'atm' ? 'default' : 'outline'}
+              onClick={() => setFilter('atm')}
+              className={filter === 'atm' ? 'gold-gradient' : 'border-infi-gold/50 text-infi-gold-light hover:bg-infi-gold/10'}
+            >
+              ATMs
+            </Button>
+            <Button
+              variant={filter === 'exchange' ? 'default' : 'outline'}
+              onClick={() => setFilter('exchange')}
+              className={filter === 'exchange' ? 'gold-gradient' : 'border-infi-gold/50 text-infi-gold-light hover:bg-infi-gold/10'}
+            >
+              Exchanges
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Map Placeholder */}
         <Card className="card-glass">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-infi-gold">
-              <Search size={20} />
-              Search & Filter
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="relative">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-              <Input
-                type="text"
-                placeholder="Search locations..."
-                className="pl-10 bg-infi-dark-blue/80 border-infi-gold/20"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-gray-300">Location Type</p>
-              <div className="grid grid-cols-2 gap-2">
-                <Button
-                  variant={selectedType === 'all' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setSelectedType('all')}
-                  className={selectedType === 'all' ? 'gold-gradient' : 'border-infi-gold/30'}
-                >
-                  All
-                </Button>
-                <Button
-                  variant={selectedType === 'ATM' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setSelectedType('ATM')}
-                  className={selectedType === 'ATM' ? 'gold-gradient' : 'border-infi-gold/30'}
-                >
-                  ATMs
-                </Button>
-                <Button
-                  variant={selectedType === 'Store' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setSelectedType('Store')}
-                  className={selectedType === 'Store' ? 'gold-gradient' : 'border-infi-gold/30'}
-                >
-                  Stores
-                </Button>
-                <Button
-                  variant={selectedType === 'Exchange' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setSelectedType('Exchange')}
-                  className={selectedType === 'Exchange' ? 'gold-gradient' : 'border-infi-gold/30'}
-                >
-                  Exchanges
-                </Button>
+          <CardContent className="p-0">
+            <div className="h-96 bg-infi-dark-blue/50 rounded-lg flex items-center justify-center relative overflow-hidden">
+              <div className="text-center">
+                <MapPin className="h-12 w-12 text-infi-gold mx-auto mb-2" />
+                <p className="text-gray-300">Interactive Map</p>
+                <p className="text-sm text-gray-400">Map integration coming soon</p>
+              </div>
+              
+              {/* Mock map markers */}
+              <div className="absolute inset-0 pointer-events-none">
+                {filteredLocations.map((location, index) => (
+                  <div
+                    key={location.id}
+                    className="absolute w-6 h-6 text-xl cursor-pointer pointer-events-auto"
+                    style={{
+                      left: `${20 + index * 25}%`,
+                      top: `${30 + index * 15}%`,
+                    }}
+                    onClick={() => setSelectedLocation(location)}
+                  >
+                    {getTypeIcon(location.type)}
+                  </div>
+                ))}
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Locations List */}
+        {/* Location List */}
         <Card className="card-glass">
-          <CardHeader>
-            <CardTitle className="text-infi-gold">Nearby Locations</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4 max-h-80 overflow-y-auto">
+          <CardContent className="p-4">
+            <h3 className="text-lg font-semibold mb-4">Crypto Locations ({filteredLocations.length})</h3>
+            <div className="space-y-3 max-h-80 overflow-y-auto">
               {filteredLocations.map((location) => (
-                <div key={location.id} className="border border-infi-gold/20 rounded-lg p-4 hover:bg-infi-gold/5 transition-colors">
-                  <div className="flex items-start justify-between mb-2">
-                    <h4 className="font-medium text-white">{location.name}</h4>
-                    <span className={`text-xs px-2 py-1 rounded-full ${
-                      location.type === 'ATM' ? 'bg-blue-500/20 text-blue-300' :
-                      location.type === 'Store' ? 'bg-green-500/20 text-green-300' :
-                      'bg-purple-500/20 text-purple-300'
-                    }`}>
-                      {location.type}
-                    </span>
-                  </div>
-                  <p className="text-sm text-gray-400 mb-3">{location.address}</p>
-                  <div className="flex flex-wrap gap-1">
-                    {location.acceptedCoins.map((coin) => (
-                      <span key={coin} className="text-xs bg-infi-gold/20 text-infi-gold px-2 py-1 rounded">
-                        {coin}
-                      </span>
-                    ))}
+                <div
+                  key={location.id}
+                  className={`p-4 rounded-lg border cursor-pointer transition-colors ${
+                    selectedLocation?.id === location.id
+                      ? 'border-infi-gold bg-infi-gold/10'
+                      : 'border-infi-gold/20 bg-infi-dark-blue/30 hover:border-infi-gold/40'
+                  }`}
+                  onClick={() => setSelectedLocation(location)}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-lg">{getTypeIcon(location.type)}</span>
+                        <h4 className="font-medium">{location.name}</h4>
+                      </div>
+                      <p className="text-sm text-gray-400 mb-2">{location.address}</p>
+                      <div className="flex flex-wrap gap-1 mb-2">
+                        {location.cryptocurrencies.map((crypto) => (
+                          <span
+                            key={crypto}
+                            className="text-xs bg-infi-dark px-2 py-1 rounded-full border border-infi-gold/30 text-infi-gold-light"
+                          >
+                            {crypto}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="flex items-center">
+                        <span className="text-yellow-400">★</span>
+                        <span className="ml-1 text-sm">{location.rating}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -186,6 +184,48 @@ const CryptoMap = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Selected Location Details */}
+      {selectedLocation && (
+        <Card className="card-glass">
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4 mb-4">
+              <span className="text-2xl">{getTypeIcon(selectedLocation.type)}</span>
+              <div>
+                <h3 className="text-xl font-semibold">{selectedLocation.name}</h3>
+                <p className="text-gray-400">{selectedLocation.address}</p>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <h4 className="font-medium mb-2">Accepted Cryptocurrencies</h4>
+                <div className="flex flex-wrap gap-2">
+                  {selectedLocation.cryptocurrencies.map((crypto) => (
+                    <span
+                      key={crypto}
+                      className="bg-infi-dark px-3 py-1 rounded-full border border-infi-gold/30 text-infi-gold-light flex items-center gap-1"
+                    >
+                      <Bitcoin className="h-3 w-3" />
+                      {crypto}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              
+              <div>
+                <h4 className="font-medium mb-2">Actions</h4>
+                <div className="space-y-2">
+                  <Button className="w-full gold-gradient">Get Directions</Button>
+                  <Button variant="outline" className="w-full border-infi-gold/50 text-infi-gold-light hover:bg-infi-gold/10">
+                    View Details
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };
