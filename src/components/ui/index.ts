@@ -43,3 +43,5 @@ export * from "./toggle-group";
 export * from "./tooltip";
 // Export the toast function from use-toast to avoid naming conflicts with sonner's toast
 export { useToast, toast } from "./use-toast";
+// Export the new custom page component
+export { default as CustomPage } from "./custom-page";
