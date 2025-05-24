@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Project } from '@/types/project';
-import { edit, trash } from 'lucide-react';
+import { Edit, Trash } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface ProjectListProps {
@@ -88,7 +88,7 @@ export const ProjectList: React.FC<ProjectListProps> = ({
                 onClick={() => onEdit(project)}
                 className="flex-1 border-infi-gold/50 text-infi-gold-light hover:bg-infi-gold/10"
               >
-                <edit className="w-4 h-4 mr-1" />
+                <Edit className="w-4 h-4 mr-1" />
                 Edit
               </Button>
               <Button
@@ -97,7 +97,7 @@ export const ProjectList: React.FC<ProjectListProps> = ({
                 onClick={() => onDelete(project.id)}
                 className="flex-1 border-red-500/50 text-red-400 hover:bg-red-500/10"
               >
-                <trash className="w-4 h-4 mr-1" />
+                <Trash className="w-4 h-4 mr-1" />
                 Delete
               </Button>
             </div>
