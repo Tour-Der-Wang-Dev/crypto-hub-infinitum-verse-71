@@ -36,6 +36,9 @@ const Navbar = () => {
           <Link to="/dashboard" className="px-3 py-2 rounded-md text-sm hover:bg-infi-blue/30 transition-colors">
             Dashboard
           </Link>
+          <Link to="/projects" className="px-3 py-2 rounded-md text-sm hover:bg-infi-blue/30 transition-colors">
+            Projects
+          </Link>
           <Link to="/admin" className="px-3 py-2 rounded-md text-sm hover:bg-infi-blue/30 transition-colors">
             Admin
           </Link>
@@ -98,6 +101,13 @@ const Navbar = () => {
               onClick={() => setMobileMenuOpen(false)}
             >
               Dashboard
+            </Link>
+            <Link
+              to="/projects"
+              className="block px-3 py-2 rounded-md text-base font-medium hover:bg-infi-blue/30 transition-colors"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Projects
             </Link>
             <Link
               to="/admin"

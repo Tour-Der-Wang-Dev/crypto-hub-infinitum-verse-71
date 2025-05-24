@@ -1,61 +1,28 @@
 
 import DOMPurify from 'dompurify';
+import { useMemo } from 'react';
 
-/**
- * Sanitizes HTML content to prevent XSS attacks
- * @param dirty - The potentially unsafe HTML string
- * @returns Sanitized HTML string
- */
-export const sanitizeInput = (dirty: string): string => {
+export const sanitizeHtml = (dirty: string): string => {
   return DOMPurify.sanitize(dirty, {
-    ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'br'],
-    ALLOWED_ATTR: ['href', 'target'],
-    ALLOWED_URI_REGEXP: /^https?:\/\//,
+    ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'i', 'b', 'a', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+    ALLOWED_ATTR: ['href', 'target', 'rel', 'class', 'id'],
   });
 };
 
-/**
- * Sanitizes user input for safe display
- * @param input - User input string
- * @returns Sanitized string
- */
-export const sanitizeUserInput = (input: string): string => {
-  return input
-    .replace(/[<>]/g, '') // Remove < and > characters
-    .replace(/javascript:/gi, '') // Remove javascript: protocol
-    .replace(/on\w+=/gi, '') // Remove event handlers
-    .trim();
-};
-
-/**
- * Validates and sanitizes email addresses
- * @param email - Email string to validate
- * @returns Sanitized email or null if invalid
- */
-export const sanitizeEmail = (email: string): string | null => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const sanitized = sanitizeUserInput(email.toLowerCase());
-  
-  return emailRegex.test(sanitized) ? sanitized : null;
-};
-
-/**
- * Sanitizes URL input
- * @param url - URL string to sanitize
- * @returns Sanitized URL or null if invalid
- */
-export const sanitizeUrl = (url: string): string | null => {
-  try {
-    const sanitized = sanitizeUserInput(url);
-    const urlObj = new URL(sanitized);
-    
-    // Only allow http and https protocols
-    if (urlObj.protocol !== 'http:' && urlObj.protocol !== 'https:') {
-      return null;
-    }
-    
-    return urlObj.toString();
-  } catch {
-    return null;
+export const sanitizeInput = (input: any): string => {
+  if (input === null || input === undefined) {
+    return '';
   }
+  
+  const str = String(input);
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+};
+
+export const useSanitizedValue = (value: string): string => {
+  return useMemo(() => sanitizeInput(value), [value]);
 };

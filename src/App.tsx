@@ -9,6 +9,7 @@ import FreelancePage from '@/pages/FreelancePage';
 import TravelPage from '@/pages/TravelPage';
 import VerificationPage from '@/pages/VerificationPage';
 import DashboardPage from '@/pages/DashboardPage';
+import ProjectDashboardPage from '@/pages/ProjectDashboardPage';
 import AdminPage from '@/pages/AdminPage';
 import NotFound from '@/pages/NotFound';
 import { Toaster } from '@/components/ui/toaster';
@@ -29,6 +30,7 @@ function App() {
             <Route path="/travel" element={<TravelPage />} />
             <Route path="/verification" element={<VerificationPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/projects" element={<ProjectDashboardPage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
